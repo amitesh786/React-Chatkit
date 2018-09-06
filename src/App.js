@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 import Chatkit from '@pusher/chatkit';
 import MessageList from './components/MessageList';
 import SendMessageForm from './components/SendMessageForm';
 import RoomList from './components/RoomList';
 import NewRoomForm from './components/NewRoomForm';
 
-import { tokenUrl, instanceLocator } from './js/config'
+import { tokenUrl, instanceLocator } from '../config';
 
 class App extends React.Component {
-    
+
     constructor() {
         super()
         this.state = {
@@ -21,11 +21,23 @@ class App extends React.Component {
         this.sendMessage = this.sendMessage.bind(this)
         this.subscribeToRoom = this.subscribeToRoom.bind(this)
     }
+    // chatManager.connect()
+    //     .then(currentUser => {
+    //         currentUser.subscribeToRoom({
+    //             roomId: 15573541,
+    //             hooks: {
+    //                 onNewMessage: message => {
+    //                     console.log('message.text: ', message.text);
+    //                 }
+    //             }
+    //         })
+    //     })   
 
     componentDidMount() {
+
         const chatManager = new Chatkit.ChatManager({
-            instanceLocator: instanceLocator,
-            userId: "perborgen",
+            instanceLocator,
+            userId: 'singh',
             tokenProvider: new Chatkit.TokenProvider({
                 url: tokenUrl
             })
@@ -90,14 +102,18 @@ class App extends React.Component {
     render() {
         return (
             <div className="app">
+
                 <RoomList
                     rooms={[...this.state.joinableRooms, ...this.state.joinedRooms]}
                     subscribeToRoom={this.subscribeToRoom}
                     currentRoomId={this.state.currentRoomId} />
+
                 <MessageList
                     currentRoomId={this.state.currentRoomId}
                     messages={this.state.messages} />
+
                 <NewRoomForm onSubmit={this.createRoom.bind(this)} />
+
                 <SendMessageForm
                     sendMessage={this.sendMessage}
                     disabled={!this.state.currentRoomId} />
